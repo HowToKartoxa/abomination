@@ -1,2 +1,2 @@
-# abominatinon
-a simple qt game
+# abomination
+a simple qt game about clicking

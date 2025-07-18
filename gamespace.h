@@ -59,6 +59,8 @@ private slots:
 
     void cursorUpdateEvent();
 
+    void cursorMovementEvent();
+
     void changeTheme();
 
 signals:

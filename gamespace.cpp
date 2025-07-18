@@ -82,10 +82,13 @@ GameSpace::GameSpace(QWidget *parent, int difficulty, bool _showVectors, bool _u
     }
     updateTimer = new QTimer(this);
     cursorAnimationUpdateTimer = new QTimer(this);
+    cursorMovementStatsUpdateTimer = new QTimer(this);
     updateTimer->setInterval(10);
     cursorAnimationUpdateTimer->setInterval(12);
+    cursorMovementStatsUpdateTimer->setInterval(100);
     connect(updateTimer, &QTimer::timeout, this, &GameSpace::updateEvent);
     connect(cursorAnimationUpdateTimer, &QTimer::timeout, this, &GameSpace::cursorUpdateEvent);
+    connect(cursorMovementStatsUpdateTimer, &QTimer::timeout, this, &GameSpace::cursorMovementEvent);
     updateTimer->start();
 
     QFileInfoList lst = QDir(":/bat/cursor").entryInfoList();
@@ -119,6 +122,7 @@ GameSpace::GameSpace(QWidget *parent, int difficulty, bool _showVectors, bool _u
         connect(zub, &zubzub::died, this, &GameSpace::onZubZubDied);
     }
     gameStartedAt = QTime::currentTime();
+    cursorMovementStatsUpdateTimer->start();
     gameGoing = true;
 }
 
@@ -287,6 +291,9 @@ void GameSpace::cursorUpdateEvent(){
         setCursor(QCursor(*cursorFrames[currentCursorFrame], 46, 7));
         currentCursorFrame++;
     }
+}
+
+void GameSpace::cursorMovementEvent(){
 
 }
 

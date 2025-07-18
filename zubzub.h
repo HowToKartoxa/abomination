@@ -44,6 +44,7 @@ private:
 
     bool isDying;
     bool isPickedUp;
+    bool isDead;
 
     double ambulanceSpeed;
 
@@ -67,7 +68,7 @@ public:
     void setHp(unsigned int);
 
     bool isCurrentlyDying();
-
+    bool isCurrentlyDead();
 
 signals:
     void died(zubzub* self);

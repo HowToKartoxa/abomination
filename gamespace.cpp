@@ -156,7 +156,7 @@ void GameSpace::mousePressEvent(QMouseEvent* ev){
                     effect->play();
                     played_sound = true;
                 }
-                if(!zubs[i]->isCurrentlyDying()){
+                if(!zubs[i]->isCurrentlyDying() && !zubs[i]->isCurrentlyDead()){
                     unsigned int eval = zubs[i]->hp();
                     eval--;
                     if(eval <= 0){
@@ -234,13 +234,12 @@ void GameSpace::onZubZubDied(zubzub* _zub){
         unsigned int i = 0;
         while(indicator){
             if(zubs[i] == _zub){
-                disconnect(zub, &zubzub::died, this, &GameSpace::onZubZubDied);
-                zubs.removeAt(i);
+                disconnect(zubs[i], &zubzub::died, this, &GameSpace::onZubZubDied);
                 indicator = false;
             }
             i++;
         }
-        if(zubs.isEmpty()){
+        if(zubs[0]->isCurrentlyDead() && zubs[1]->isCurrentlyDead() && zubs[2]->isCurrentlyDead()){
             gameGoing = false;
             emit finishedGame();
             hide();

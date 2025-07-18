@@ -27,7 +27,7 @@ private:
     bool playSounds;
 
     zubzub* zub;
-    QList<zubzub*> zubList;
+    QVector<zubzub*> zubs;
 
     QTimer* updateTimer;
     QTimer* cursorUpdateTimer;

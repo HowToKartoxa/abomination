@@ -23,6 +23,7 @@ zubzub::zubzub(Vector2 startPos
     ,   yLimit(_yLimit)
     ,   isDying(false)
     ,   isPickedUp(false)
+    ,   isDead(false)
     ,   ambulanceSpeed(_ambulanceSpeed)
 {
     QFileInfoList lst = QDir(":/zub/resources").entryInfoList();
@@ -100,8 +101,8 @@ void zubzub::graphicsProcess(QPainter* painter, Vector2 cursorPos, bool drawVect
             if(currentFrame == ambulanceFrames.length()) currentFrame = 0;
         }
         if((ambulancePos.xP() > xLimit + ambulanceWidthHalf) || (ambulancePos.yP() > yLimit + ambulanceHeightHalf)){
+            isDead = true;
             emit died(this);
-            delete this;
         }
     }
 }
@@ -207,4 +208,8 @@ void zubzub::setHp(unsigned int _health){
 
 bool zubzub::isCurrentlyDying(){
     return isDying;
+}
+
+bool zubzub::isCurrentlyDead(){
+    return isDead;
 }

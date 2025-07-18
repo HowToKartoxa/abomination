@@ -62,8 +62,8 @@ GameSpace::GameSpace(QWidget *parent, int difficulty, bool _showVectors, bool _u
     else{
         nightmareMode = true;
         for(int i = 0; i < 3; i ++){
-            zubs.push_back(new zubzub(Vector2(width() / 2 // start pos
-                                              , height() / 2)     //
+            zubs.push_back(new zubzub(Vector2(width() / 2 + (rand() % 6) - 2// start pos
+                                              , height() / 2 + (rand() % 6) - 2)     //
                                       , 40               // mass
                                       , 10    // hp
                                       , 230   // forceMult

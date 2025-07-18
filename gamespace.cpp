@@ -12,9 +12,13 @@ GameSpace::GameSpace(QWidget *parent, int difficulty, bool _showVectors, bool _u
     , zub(nullptr)
     , zubs()
     , updateTimer(nullptr)
-    , cursorUpdateTimer(nullptr)
+    , cursorAnimationUpdateTimer(nullptr)
+    , cursorMovementStatsUpdateTimer(nullptr)
     , gameGoing(false)
     , cursorFrames()
+    , clicks(0)
+    , hits(0)
+    , cursorDistanceTravelled(0)
 {
     srand(time(0));
     ui->setupUi(this);
@@ -77,11 +81,11 @@ GameSpace::GameSpace(QWidget *parent, int difficulty, bool _showVectors, bool _u
 
     }
     updateTimer = new QTimer(this);
-    cursorUpdateTimer = new QTimer(this);
+    cursorAnimationUpdateTimer = new QTimer(this);
     updateTimer->setInterval(10);
-    cursorUpdateTimer->setInterval(12);
+    cursorAnimationUpdateTimer->setInterval(12);
     connect(updateTimer, &QTimer::timeout, this, &GameSpace::updateEvent);
-    connect(cursorUpdateTimer, &QTimer::timeout, this, &GameSpace::cursorUpdateEvent);
+    connect(cursorAnimationUpdateTimer, &QTimer::timeout, this, &GameSpace::cursorUpdateEvent);
     updateTimer->start();
 
     QFileInfoList lst = QDir(":/bat/cursor").entryInfoList();
@@ -114,6 +118,7 @@ GameSpace::GameSpace(QWidget *parent, int difficulty, bool _showVectors, bool _u
     else{
         connect(zub, &zubzub::died, this, &GameSpace::onZubZubDied);
     }
+    gameStartedAt = QTime::currentTime();
     gameGoing = true;
 }
 
@@ -143,12 +148,14 @@ void GameSpace::paintEvent(QPaintEvent* ev){
 }
 
 void GameSpace::mousePressEvent(QMouseEvent* ev){
-    if(!cursorUpdateTimer->isActive())cursorUpdateTimer->start();
+    clicks++;
+    if(!cursorAnimationUpdateTimer->isActive())cursorAnimationUpdateTimer->start();
     if(nightmareMode){
         unsigned int i = 0;
         bool played_sound = false;
         while(i < 3){
             if((Vector2(mapFromGlobal(this->cursor().pos()).rx(), mapFromGlobal(this->cursor().pos()).ry()) - zubs[i]->position()).length() < 25){
+                hits++;
                 if(playSounds){
                     QSoundEffect* effect = new QSoundEffect(this);
                     effect->setVolume(0.5f);
@@ -240,17 +247,19 @@ void GameSpace::onZubZubDied(zubzub* _zub){
             i++;
         }
         if(zubs[0]->isCurrentlyDead() && zubs[1]->isCurrentlyDead() && zubs[2]->isCurrentlyDead()){
+            gameFinishedAt = QTime::currentTime();
             gameGoing = false;
-            emit finishedGame();
+            emit finishedGame(gameStartedAt, gameFinishedAt, clicks, hits, cursorDistanceTravelled);
             hide();
             disconnect(mainTheme, &QSoundEffect::playingChanged, this, &GameSpace::changeTheme);
             mainTheme->stop();
         }
     }
     else{
+        gameFinishedAt = QTime::currentTime();
         gameGoing = false;
         disconnect(zub, &zubzub::died, this, &GameSpace::onZubZubDied);
-        emit finishedGame();
+        emit finishedGame(gameStartedAt, gameFinishedAt, clicks, hits, cursorDistanceTravelled);
         hide();
         disconnect(mainTheme, &QSoundEffect::playingChanged, this, &GameSpace::changeTheme);
         mainTheme->stop();
@@ -270,7 +279,7 @@ void GameSpace::resizeEvent(QResizeEvent* ev){
 
 void GameSpace::cursorUpdateEvent(){
     if(currentCursorFrame == cursorFrames.length()){
-        cursorUpdateTimer->stop();
+        cursorAnimationUpdateTimer->stop();
         currentCursorFrame = 0;
         setCursor(QCursor(*cursorFrames[currentCursorFrame], 46, 7));
     }
@@ -294,9 +303,9 @@ GameSpace::~GameSpace()
         iter++;
     }
     updateTimer->stop();
-    cursorUpdateTimer->stop();
+    cursorAnimationUpdateTimer->stop();
     delete updateTimer;
-    delete cursorUpdateTimer;
+    delete cursorAnimationUpdateTimer;
     mainTheme->stop();
     delete mainTheme;
     delete ui;

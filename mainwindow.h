@@ -35,6 +35,6 @@ private slots:
     void onExitButtonPressed();
     void onSoundsToggled();
     void onFullscreenToggled();
-    void onFinishedGame();
+    void onFinishedGame(QTime _gameStartedAt, QTime _gameFinishedAt, unsigned int _clicks, unsigned short _hits, unsigned long long _cusorDistanceTravelled);
 };
 #endif // MAINWINDOW_H

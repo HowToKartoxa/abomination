@@ -13,18 +13,21 @@ SOURCES += \
     gamespace.cpp \
     main.cpp \
     mainwindow.cpp \
+    serverdialog.cpp \
     vector2.cpp \
     zubzub.cpp
 
 HEADERS += \
     gamespace.h \
     mainwindow.h \
+    serverdialog.h \
     vector2.h \
     zubzub.h
 
 FORMS += \
     gamespace.ui \
-    mainwindow.ui
+    mainwindow.ui \
+    serverdialog.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

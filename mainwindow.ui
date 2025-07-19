@@ -141,7 +141,14 @@
     <addaction name="actionfullscreen"/>
     <addaction name="actionsounds"/>
    </widget>
+   <widget class="QMenu" name="menuNetwork">
+    <property name="title">
+     <string>Network</string>
+    </property>
+    <addaction name="actionlog_in"/>
+   </widget>
    <addaction name="menuOptions"/>
+   <addaction name="menuNetwork"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="action">
@@ -174,6 +181,11 @@
    </property>
    <property name="text">
     <string>Проигрывать звуки</string>
+   </property>
+  </action>
+  <action name="actionlog_in">
+   <property name="text">
+    <string>log in</string>
    </property>
   </action>
  </widget>

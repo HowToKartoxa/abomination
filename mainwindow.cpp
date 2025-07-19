@@ -89,8 +89,10 @@ void MainWindow::onExitButtonPressed(){
     delete this;
 }
 
-void MainWindow::onFinishedGame(QTime _gameStartedAt, QTime _gameFinishedAt, unsigned int _clicks, unsigned short _hits, unsigned long long _cusorDistanceTravelled){
+void MainWindow::onFinishedGame(QTime _gameStartedAt, QTime _gameFinishedAt, unsigned int _clicks, unsigned short _hits, unsigned long long _cursorDistanceTravelled){
     //delete this;
+    //QTextStream str(stdout);
+    //str << _gameStartedAt.toString() << '\n' << _gameFinishedAt.toString() << '\n' << QString::number(_clicks) << '\n' << QString::number(_hits) << '\n' << QString::number(_cursorDistanceTravelled);
     show();
     if(playSounds) mainMenuTheme->play();
 }

@@ -33,6 +33,8 @@ private:
     QTimer* cursorAnimationUpdateTimer;
     QTimer* cursorMovementStatsUpdateTimer;
 
+    Vector2 lastCursorPos;
+
     bool gameGoing;
 
     QList<QPixmap*> cursorFrames;

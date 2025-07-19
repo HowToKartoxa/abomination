@@ -121,6 +121,9 @@ GameSpace::GameSpace(QWidget *parent, int difficulty, bool _showVectors, bool _u
     else{
         connect(zub, &zubzub::died, this, &GameSpace::onZubZubDied);
     }
+
+    lastCursorPos = Vector2(mapFromGlobal(this->cursor().pos()).rx(), mapFromGlobal(this->cursor().pos()).ry());
+
     gameStartedAt = QTime::currentTime();
     cursorMovementStatsUpdateTimer->start();
     gameGoing = true;
@@ -201,6 +204,7 @@ void GameSpace::mousePressEvent(QMouseEvent* ev){
     }
     else{
         if((Vector2(mapFromGlobal(this->cursor().pos()).rx(), mapFromGlobal(this->cursor().pos()).ry()) - zub->position()).length() < 25){
+            hits++;
             if(playSounds){
                 QSoundEffect* effect = new QSoundEffect(this);
                 effect->setVolume(0.5f);
@@ -294,7 +298,9 @@ void GameSpace::cursorUpdateEvent(){
 }
 
 void GameSpace::cursorMovementEvent(){
-
+    Vector2 temp = Vector2(mapFromGlobal(this->cursor().pos()).rx(), mapFromGlobal(this->cursor().pos()).ry());
+    cursorDistanceTravelled += (temp - lastCursorPos).length();
+    lastCursorPos = temp;
 }
 
 GameSpace::~GameSpace()

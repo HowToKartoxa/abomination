@@ -24,7 +24,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->actionsounds, &QAction::toggled, this, &MainWindow::onSoundsToggled);
     connect(ui->comboBox, &QComboBox::currentIndexChanged, this, &MainWindow::onDifficultySelected);
     connect(ui->startbtn, &QAbstractButton::clicked, this, &MainWindow::onStartButtonPressed);
-    connect(ui->exitbtn, &QAbstractButton::clicked, this, &MainWindow::onExitButtonPressed);\
+    connect(ui->exitbtn, &QAbstractButton::clicked, this, &MainWindow::onExitButtonPressed);
 
     if(playSounds) mainMenuTheme->play();
 }
@@ -89,8 +89,10 @@ void MainWindow::onExitButtonPressed(){
     delete this;
 }
 
-void MainWindow::onFinishedGame(){
+void MainWindow::onFinishedGame(QTime _gameStartedAt, QTime _gameFinishedAt, unsigned int _clicks, unsigned short _hits, unsigned long long _cursorDistanceTravelled){
     //delete this;
+    //QTextStream str(stdout);
+    //str << _gameStartedAt.toString() << '\n' << _gameFinishedAt.toString() << '\n' << QString::number(_clicks) << '\n' << QString::number(_hits) << '\n' << QString::number(_cursorDistanceTravelled);
     show();
     if(playSounds) mainMenuTheme->play();
 }

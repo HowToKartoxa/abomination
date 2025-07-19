@@ -30,7 +30,10 @@ private:
     QVector<zubzub*> zubs;
 
     QTimer* updateTimer;
-    QTimer* cursorUpdateTimer;
+    QTimer* cursorAnimationUpdateTimer;
+    QTimer* cursorMovementStatsUpdateTimer;
+
+    Vector2 lastCursorPos;
 
     bool gameGoing;
 
@@ -39,6 +42,14 @@ private:
 
     QSoundEffect* mainTheme;
 
+    // Game statistics
+    QTime gameStartedAt;
+    QTime gameFinishedAt;
+
+    unsigned int clicks;
+    unsigned short hits;
+
+    unsigned long long cursorDistanceTravelled;
 
 
 private slots:
@@ -50,10 +61,12 @@ private slots:
 
     void cursorUpdateEvent();
 
+    void cursorMovementEvent();
+
     void changeTheme();
 
 signals:
-    void finishedGame();
+    void finishedGame(QTime _gameStartedAt, QTime _gameFinishedAt, unsigned int _clicks, unsigned short _hits, unsigned long long _cusorDistanceTravelled);
 };
 
 #endif // GAMESPACE_H
